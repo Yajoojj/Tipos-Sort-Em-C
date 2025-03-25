@@ -10,21 +10,6 @@ Este repositório contém a implementação de cinco algoritmos de ordenação e
 ✅ **Merge Sort** - Divide recursivamente o array em metades, ordena cada uma e depois intercala as duas metades para formar um array ordenado.  
 ✅ **Quick Sort** - Escolhe um pivô, particiona o array em elementos menores e maiores que o pivô e, recursivamente, ordena as partições.  
 
-## 💻 Como Executar
-
-1. Certifique-se de ter um compilador C instalado (GCC recomendado).
-2. Clone este repositório ou copie o código.
-3. Compile o código usando o comando:
-
-```sh
-gcc ordenacao.c -o ordenacao
-```
-
-4. Execute o programa:
-
-```sh
-./ordenacao
-```
 
 ## 📌 Exemplo de Saída
 
