@@ -24,14 +24,19 @@ void bubble(int arr[], int n) {
 
 // ==================== INSERTION SORT ====================
 // Insere cada elemento na posição correta dentro da parte já ordenada do array.
-void insertion(int arr[], int n) {
-    for (int i = 1; i < n; i++) {
-        int key = arr[i], j = i - 1;
-        while (j >= 0 && arr[j] > key) arr[j + 1] = arr[j--];  // Move elementos maiores para a direita
-        arr[j + 1] = key;  // Insere o elemento na posição correta
+void insertionSort(int arr[], int n) {
+    for (int i = 1, j; i < n; i++) {
+        int key = arr[i];
+        printf("O valor a ser inserido: %d\n",key);
+        for (j = i - 1; j >= 0 && arr[j] > key; j--){
+            printf("trocas realizadas: %d com %d \n",arr[j+1],arr[j]);
+            arr[j + 1] = arr[j];
+        }
+        printf("Insere o valor %d no lugar correto que é a posicao %d \n",key,j+1);
+        arr[j + 1] = key;
+        imprime(arr,6);
     }
 }
-
 // ==================== SELECTION SORT ====================
 // Encontra o menor elemento da parte não ordenada e o coloca na posição correta.
 void selection(int arr[], int n) {
