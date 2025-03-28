@@ -4,7 +4,7 @@
 // ==================== FUNÇÃO PARA IMPRIMIR O ARRAY ====================
 // Percorre o array e imprime seus elementos na tela
 void print(int arr[], int n) {
-    for (int i = 0; i < n; i++) 
+    for (int i = 0; i < n; i++)
         printf("%d ", arr[i]);
     printf("\n");
 }
@@ -17,8 +17,8 @@ void bubble(int arr[], int n) {
         int swapped = 0; // Flag para verificar se houve troca
         for (int j = 0; j < n - i - 1; j++) {
             if (arr[j] > arr[j + 1]) { // Se está fora de ordem, troca os elementos
-                int temp = arr[j]; 
-                arr[j] = arr[j + 1]; 
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
                 arr[j + 1] = temp;
                 swapped = 1;
             }
@@ -46,12 +46,12 @@ void selection(int arr[], int n) {
     for (int i = 0; i < n - 1; i++) {
         int min = i; // Assume que o menor elemento está na posição atual
         for (int j = i + 1; j < n; j++)
-            if (arr[j] < arr[min]) 
+            if (arr[j] < arr[min])
                 min = j; // Atualiza o índice do menor elemento encontrado
-        
+
         // Troca o menor elemento encontrado com o primeiro elemento da parte não ordenada
-        int temp = arr[i]; 
-        arr[i] = arr[min]; 
+        int temp = arr[i];
+        arr[i] = arr[min];
         arr[min] = temp;
     }
 }
@@ -68,19 +68,19 @@ void merge(int arr[], int l, int m, int r) {
         exit(1);
     }
 
-    for (int i = 0; i < n1; i++) 
+    for (int i = 0; i < n1; i++)
         L[i] = arr[l + i]; // Copia os elementos do primeiro subarray
-    for (int j = 0; j < n2; j++) 
+    for (int j = 0; j < n2; j++)
         R[j] = arr[m + 1 + j]; // Copia os elementos do segundo subarray
 
     int i = 0, j = 0, k = l;
-    while (i < n1 && j < n2) 
+    while (i < n1 && j < n2)
         arr[k++] = (L[i] <= R[j]) ? L[i++] : R[j++];
 
-    while (i < n1) 
+    while (i < n1)
         arr[k++] = L[i++];
 
-    while (j < n2) 
+    while (j < n2)
         arr[k++] = R[j++];
 
     free(L);
@@ -101,19 +101,19 @@ void mergeSort(int arr[], int l, int r) {
 // Particiona o array escolhendo um pivô e reorganizando os elementos
 int partition(int arr[], int low, int high) {
     int pivot = arr[high]; // Escolhe o último elemento como pivô
-    int i = low; 
+    int i = low;
 
     for (int j = low; j < high; j++) {
         if (arr[j] <= pivot) { // Se o elemento é menor que o pivô, troca de lugar
-            int temp = arr[i]; 
-            arr[i] = arr[j]; 
+            int temp = arr[i];
+            arr[i] = arr[j];
             arr[j] = temp;
             i++;
         }
     }
     // Coloca o pivô na posição correta
-    int temp = arr[i]; 
-    arr[i] = arr[high]; 
+    int temp = arr[i];
+    arr[i] = arr[high];
     arr[high] = temp;
 
     return i; // Retorna a posição do pivô
@@ -143,13 +143,13 @@ int main() {
     // Testa cada algoritmo de ordenação
     for (int i = 0; i < 5; i++) {
         int arr[n]; // Cria um array auxiliar para não modificar o original
-        for (int j = 0; j < n; j++) 
+        for (int j = 0; j < n; j++)
             arr[j] = original[j]; // Copia os elementos do array original
 
         // Chama a função de ordenação correspondente
-        if (i < 3) 
+        if (i < 3)
             sorts[i](arr, n);
-        else 
+        else
             sorts3[i - 3](arr, 0, n - 1);
 
         printf("%s Sort: ", nomes[i]); // Exibe o nome do algoritmo
