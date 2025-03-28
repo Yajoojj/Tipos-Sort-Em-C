@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//0
 // ==================== FUNÇÃO PARA IMPRIMIR O ARRAY ====================
 // Percorre o array e imprime seus elementos na tela
 void print(int arr[], int n) {
