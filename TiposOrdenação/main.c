@@ -1,109 +1,140 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 
-// Função para imprimir um array
+// ==================== FUNÇÃO PARA IMPRIMIR O ARRAY ====================
+// Percorre o array e imprime seus elementos na tela
 void print(int arr[], int n) {
-    for (int i = 0; i < n; i++) printf("%d ", arr[i]);  // Imprime cada elemento do array
-    printf("\n");  // Nova linha após imprimir todos os elementos
+    for (int i = 0; i < n; i++) 
+        printf("%d ", arr[i]);
+    printf("\n");
 }
 
 // ==================== BUBBLE SORT ====================
-// Percorre repetidamente o array, trocando elementos adjacentes fora de ordem.
+// Percorre o array várias vezes e troca elementos adjacentes fora de ordem.
 // Se nenhuma troca for feita em uma passagem, o array já está ordenado.
 void bubble(int arr[], int n) {
     for (int i = 0; i < n - 1; i++) {
-        int swapped = 0;  // Indica se houve troca na passagem atual
-        for (int j = 0; j < n - i - 1; j++)
-            if (arr[j] > arr[j + 1]) {  // Se o elemento está fora de ordem, troca
-                int temp = arr[j]; arr[j] = arr[j + 1]; arr[j + 1] = temp;
+        int swapped = 0; // Flag para verificar se houve troca
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) { // Se está fora de ordem, troca os elementos
+                int temp = arr[j]; 
+                arr[j] = arr[j + 1]; 
+                arr[j + 1] = temp;
                 swapped = 1;
             }
-        if (!swapped) break;  // Se não houve troca, encerra o loop
+        }
+        if (!swapped) break; // Se não houve trocas, o array já está ordenado
     }
 }
 
 // ==================== INSERTION SORT ====================
-// Insere cada elemento na posição correta dentro da parte já ordenada do array.
+// Insere cada elemento na posição correta dentro da parte ordenada do array.
 void insertionSort(int arr[], int n) {
     for (int i = 1, j; i < n; i++) {
-        int key = arr[i];
-        printf("O valor a ser inserido: %d\n",key);
-        for (j = i - 1; j >= 0 && arr[j] > key; j--){
-            printf("trocas realizadas: %d com %d \n",arr[j+1],arr[j]);
-            arr[j + 1] = arr[j];
+        int key = arr[i]; // Elemento a ser inserido na posição correta
+        for (j = i - 1; j >= 0 && arr[j] > key; j--) {
+            arr[j + 1] = arr[j]; // Move os elementos para abrir espaço
         }
-        printf("Insere o valor %d no lugar correto que é a posicao %d \n",key,j+1);
-        arr[j + 1] = key;
-        imprime(arr,6);
+        arr[j + 1] = key; // Insere o elemento na posição correta
+        print(arr, n); // Exibe o array a cada iteração (opcional)
     }
 }
+
 // ==================== SELECTION SORT ====================
 // Encontra o menor elemento da parte não ordenada e o coloca na posição correta.
 void selection(int arr[], int n) {
     for (int i = 0; i < n - 1; i++) {
-        int min = i;  // Assume que o menor elemento é o primeiro da parte não ordenada
+        int min = i; // Assume que o menor elemento está na posição atual
         for (int j = i + 1; j < n; j++)
-            if (arr[j] < arr[min]) min = j;  // Atualiza o índice do menor elemento encontrado
-        int temp = arr[i]; arr[i] = arr[min]; arr[min] = temp;  // Troca os elementos
+            if (arr[j] < arr[min]) 
+                min = j; // Atualiza o índice do menor elemento encontrado
+        
+        // Troca o menor elemento encontrado com o primeiro elemento da parte não ordenada
+        int temp = arr[i]; 
+        arr[i] = arr[min]; 
+        arr[min] = temp;
     }
 }
 
 // ==================== MERGE SORT ====================
-// Algoritmo baseado no paradigma "Dividir para Conquistar".
-// Divide o array em duas metades, ordena cada metade e depois intercala as duas partes ordenadas.
+// Função para intercalar dois subarrays ordenados em um único array ordenado
 void merge(int arr[], int l, int m, int r) {
     int n1 = m - l + 1, n2 = r - m;
-    int *L = malloc(n1 * sizeof(int)), *R = malloc(n2 * sizeof(int));  // Arrays temporários
+    int *L = malloc(n1 * sizeof(int));
+    int *R = malloc(n2 * sizeof(int));
 
-    for (int i = 0; i < n1; i++) L[i] = arr[l + i];  // Copia a primeira metade
-    for (int j = 0; j < n2; j++) R[j] = arr[m + 1 + j];  // Copia a segunda metade
+    if (!L || !R) { // Verifica se a alocação foi bem-sucedida
+        printf("Erro de alocação de memória.\n");
+        exit(1);
+    }
+
+    for (int i = 0; i < n1; i++) 
+        L[i] = arr[l + i]; // Copia os elementos do primeiro subarray
+    for (int j = 0; j < n2; j++) 
+        R[j] = arr[m + 1 + j]; // Copia os elementos do segundo subarray
 
     int i = 0, j = 0, k = l;
-    while (i < n1 && j < n2) arr[k++] = (L[i] <= R[j]) ? L[i++] : R[j++];  // Intercala as metades
-    while (i < n1) arr[k++] = L[i++];  // Copia os elementos restantes da primeira metade
-    while (j < n2) arr[k++] = R[j++];  // Copia os elementos restantes da segunda metade
+    while (i < n1 && j < n2) 
+        arr[k++] = (L[i] <= R[j]) ? L[i++] : R[j++];
 
-    free(L); free(R);  // Libera memória alocada
+    while (i < n1) 
+        arr[k++] = L[i++];
+
+    while (j < n2) 
+        arr[k++] = R[j++];
+
+    free(L);
+    free(R);
 }
 
+// Função principal do Merge Sort
 void mergeSort(int arr[], int l, int r) {
     if (l < r) {
-        int m = l + (r - l) / 2;  // Encontra o meio do array
-        mergeSort(arr, l, m);  // Ordena a primeira metade
-        mergeSort(arr, m + 1, r);  // Ordena a segunda metade
-        merge(arr, l, m, r);  // Junta as metades ordenadas
+        int m = l + (r - l) / 2; // Encontra o meio do array
+        mergeSort(arr, l, m); // Ordena a primeira metade
+        mergeSort(arr, m + 1, r); // Ordena a segunda metade
+        merge(arr, l, m, r); // Junta as metades ordenadas
     }
 }
 
 // ==================== QUICK SORT ====================
-// Escolhe um pivô e reorganiza os elementos para que os menores fiquem antes dele e os maiores depois.
-// Depois, aplica recursivamente nas duas metades.
+// Particiona o array escolhendo um pivô e reorganizando os elementos
 int partition(int arr[], int low, int high) {
-    int pivot = arr[high], i = low;  // Pivô é o último elemento
-    for (int j = low; j < high; j++)
-        if (arr[j] <= pivot) {  // Se o elemento é menor que o pivô, troca de lugar
-            int temp = arr[i]; arr[i] = arr[j]; arr[j] = temp;
+    int pivot = arr[high]; // Escolhe o último elemento como pivô
+    int i = low; 
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] <= pivot) { // Se o elemento é menor que o pivô, troca de lugar
+            int temp = arr[i]; 
+            arr[i] = arr[j]; 
+            arr[j] = temp;
             i++;
         }
-    int temp = arr[i]; arr[i] = arr[high]; arr[high] = temp;  // Coloca o pivô na posição correta
-    return i;  // Retorna a posição do pivô
+    }
+    // Coloca o pivô na posição correta
+    int temp = arr[i]; 
+    arr[i] = arr[high]; 
+    arr[high] = temp;
+
+    return i; // Retorna a posição do pivô
 }
 
+// Função principal do Quick Sort
 void quick(int arr[], int low, int high) {
     if (low < high) {
-        int pi = partition(arr, low, high);  // Particiona o array
-        quick(arr, low, pi - 1);  // Ordena a parte antes do pivô
-        quick(arr, pi + 1, high);  // Ordena a parte depois do pivô
+        int pi = partition(arr, low, high); // Particiona o array
+        quick(arr, low, pi - 1); // Ordena a parte antes do pivô
+        quick(arr, pi + 1, high); // Ordena a parte depois do pivô
     }
 }
 
 // ==================== FUNÇÃO PRINCIPAL ====================
 int main() {
-    int original[] = {5, 3, 8, 4, 2, 7, 1, 10};  // Array original
-    int n = sizeof(original) / sizeof(original[0]);  // Número de elementos do array
+    int original[] = {5, 3, 8, 4, 2, 7, 1, 10}; // Array original
+    int n = sizeof(original) / sizeof(original[0]); // Determina o tamanho do array
 
     // Ponteiros para as funções de ordenação
-    void (*sorts[])(int[], int) = {bubble, insertion, selection};
+    void (*sorts[])(int[], int) = {bubble, insertionSort, selection};
     void (*sorts3[])(int[], int, int) = {mergeSort, quick};
 
     // Nomes das ordenações para exibição
@@ -111,14 +142,18 @@ int main() {
 
     // Testa cada algoritmo de ordenação
     for (int i = 0; i < 5; i++) {
-        int arr[n];  // Cria um array auxiliar para não modificar o original
-        for (int j = 0; j < n; j++) arr[j] = original[j];  // Copia os elementos do array original
+        int arr[n]; // Cria um array auxiliar para não modificar o original
+        for (int j = 0; j < n; j++) 
+            arr[j] = original[j]; // Copia os elementos do array original
 
-        if (i < 3) sorts[i](arr, n);  // Para os três primeiros, chama a função com dois parâmetros
-        else sorts3[i - 3](arr, 0, n - 1);  // Para MergeSort e QuickSort, chama com três parâmetros
+        // Chama a função de ordenação correspondente
+        if (i < 3) 
+            sorts[i](arr, n);
+        else 
+            sorts3[i - 3](arr, 0, n - 1);
 
-        printf("%s Sort: ", nomes[i]);  // Exibe o nome do algoritmo
-        print(arr, n);  // Exibe o array ordenado
+        printf("%s Sort: ", nomes[i]); // Exibe o nome do algoritmo
+        print(arr, n); // Exibe o array ordenado
     }
 
     return 0;
